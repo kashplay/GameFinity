@@ -130,18 +130,6 @@ export function LoginForm() {
             {isSubmitting ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
-
-        <div className="mt-8 bg-gray-50 rounded-lg p-4">
-          <h3 className="text-sm font-medium text-gray-900 mb-2">Login Credentials:</h3>
-          <div className="space-y-2 text-sm text-gray-600">
-            <div>
-              <strong>User:</strong> username: <code className="bg-white px-1 rounded">user</code>, password: <code className="bg-white px-1 rounded">user123</code>
-            </div>
-            <div>
-              <strong>Admin:</strong> username: <code className="bg-white px-1 rounded">admin</code>, password: <code className="bg-white px-1 rounded">admin123</code>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

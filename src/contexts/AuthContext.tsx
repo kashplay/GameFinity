@@ -23,7 +23,7 @@ const CREDENTIALS = {
   },
   ADMIN: {
     username: 'admin',
-    password: 'admin123'
+    password: 'admin@12345'
   }
 };
 
