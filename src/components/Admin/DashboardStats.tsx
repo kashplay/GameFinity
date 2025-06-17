@@ -1,10 +1,12 @@
 import React from 'react';
-import { TrendingUp, Users, Clock, DollarSign } from 'lucide-react';
+import { TrendingUp, Users, Clock, IndianRupee } from 'lucide-react';
 import { useData } from '../../contexts/DataContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { formatCurrency } from '../../utils/priceCalculations';
 
 export function DashboardStats() {
   const { getDashboardStats } = useData();
+  const { user } = useAuth();
   const stats = getDashboardStats();
 
   const statCards = [
@@ -28,15 +30,19 @@ export function DashboardStats() {
       icon: TrendingUp,
       color: 'text-purple-600',
       bgColor: 'bg-purple-50'
-    },
-    {
-      name: 'Cash Balance',
-      value: formatCurrency(stats.cashBalance),
-      icon: DollarSign,
-      color: 'text-emerald-600',
-      bgColor: 'bg-emerald-50'
     }
   ];
+
+  // Only add cash balance card for admin users
+  if (user?.role === 'ADMIN') {
+    statCards.push({
+      name: 'Cash Balance',
+      value: formatCurrency(stats.cashBalance),
+      icon: IndianRupee,
+      color: 'text-emerald-600',
+      bgColor: 'bg-emerald-50'
+    });
+  }
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

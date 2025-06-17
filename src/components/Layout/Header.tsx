@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogOut, User } from 'lucide-react';
+import { LogOut, User, GamepadIcon } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export function Header() {
@@ -10,7 +10,10 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <h1 className="text-xl font-bold text-gray-900">Game Shop Tracker</h1>
+            <h1 className="text-xl font-bold text-gray-900 flex items-center">
+              Gamefinity Tracker
+              <GamepadIcon className="h-5 w-5 ml-2 text-blue-600" />
+            </h1>
             {user?.role === 'ADMIN' && (
               <span className="ml-3 px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
                 Admin

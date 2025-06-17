@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Clock, DollarSign, AlertTriangle } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Clock, IndianRupee, AlertTriangle } from 'lucide-react';
 import { useData } from '../../contexts/DataContext';
 import { GameSession } from '../../types';
 import { formatTime, formatCurrency, calculateDurationInMinutes, roundToNearestHalfHour, calculatePrice } from '../../utils/priceCalculations';
@@ -8,15 +8,24 @@ interface EndSessionModalProps {
   session: GameSession;
   onClose: () => void;
   onSubmit: (sessionId: string, cashReceived: number, onlineReceived: number, mismatchReason?: string) => void;
+  currentTime: Date;
 }
 
-function EndSessionModal({ session, onClose, onSubmit }: EndSessionModalProps) {
+function EndSessionModal({ session, onClose, onSubmit, currentTime }: EndSessionModalProps) {
   const [cashReceived, setCashReceived] = useState<string>('');
   const [onlineReceived, setOnlineReceived] = useState<string>('');
   const [mismatchReason, setMismatchReason] = useState('');
 
-  const currentTime = new Date();
-  const durationMinutes = calculateDurationInMinutes(new Date(session.startTime), currentTime);
+  // Calculate duration in minutes
+  const startTime = new Date(session.startTime);
+  const diffInSeconds = Math.floor((currentTime.getTime() - startTime.getTime()) / 1000);
+  const durationMinutes = Math.floor(diffInSeconds / 60);
+  
+  // Calculate hours and minutes for display
+  const hours = Math.floor(durationMinutes / 60);
+  const minutes = durationMinutes % 60;
+  
+  // Calculate rounded hours for pricing
   const roundedHours = roundToNearestHalfHour(durationMinutes);
   const calculatedPrice = calculatePrice(session.controllerCount, roundedHours, session.gameType);
   
@@ -42,7 +51,7 @@ function EndSessionModal({ session, onClose, onSubmit }: EndSessionModalProps) {
         <div className="bg-gray-50 rounded-lg p-4 mb-4">
           <div className="text-sm text-gray-600 space-y-1">
             <p><strong>Customer:</strong> {session.customerName}</p>
-            <p><strong>Duration:</strong> {Math.floor(roundedHours)} hrs {((roundedHours % 1) * 60)} mins</p>
+            <p><strong>Duration:</strong> {hours} hrs {minutes} mins</p>
             <p><strong>Calculated Price:</strong> {formatCurrency(calculatedPrice)}</p>
           </div>
         </div>
@@ -121,15 +130,50 @@ function EndSessionModal({ session, onClose, onSubmit }: EndSessionModalProps) {
 export function ActiveSessionsList() {
   const { getActiveSessions, updateGameSession, addCashTransaction } = useData();
   const [selectedSession, setSelectedSession] = useState<GameSession | null>(null);
+  const [currentTime, setCurrentTime] = useState<Date>(new Date());
+  const [durations, setDurations] = useState<Record<string, { display: string; minutes: number }>>({});
   
   const activeSessions = getActiveSessions();
+
+  // Update durations for all active sessions
+  const updateDurations = useCallback(() => {
+    const newDurations: Record<string, { display: string; minutes: number }> = {};
+    activeSessions.forEach(session => {
+      const startTime = new Date(session.startTime);
+      const diffInSeconds = Math.floor((currentTime.getTime() - startTime.getTime()) / 1000);
+      const diffInMinutes = Math.floor(diffInSeconds / 60);
+      
+      const hours = Math.floor(diffInSeconds / 3600);
+      const minutes = Math.floor((diffInSeconds % 3600) / 60);
+      const seconds = diffInSeconds % 60;
+      
+      newDurations[session.id] = {
+        display: `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`,
+        minutes: diffInMinutes
+      };
+    });
+    setDurations(newDurations);
+  }, [activeSessions, currentTime]);
+
+  // Update current time and durations every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // Update durations whenever currentTime changes
+  useEffect(() => {
+    updateDurations();
+  }, [currentTime, updateDurations]);
 
   const handleEndSession = (sessionId: string, cashReceived: number, onlineReceived: number, mismatchReason?: string) => {
     const session = activeSessions.find(s => s.id === sessionId);
     if (!session) return;
 
-    const currentTime = new Date();
-    const durationMinutes = calculateDurationInMinutes(new Date(session.startTime), currentTime);
+    const durationMinutes = durations[sessionId]?.minutes || 0;
     const roundedHours = roundToNearestHalfHour(durationMinutes);
     const calculatedPrice = calculatePrice(session.controllerCount, roundedHours, session.gameType);
     const totalReceived = cashReceived + onlineReceived;
@@ -152,85 +196,79 @@ export function ActiveSessionsList() {
       addCashTransaction({
         gameSessionId: sessionId,
         txnAmount: cashReceived,
-        totalCurrAmount: 0, // Will be calculated in context
+        totalCurrAmount: 0,
         description: 'Game session cash payment',
         txnType: 'CREDIT',
-        txnDate: new Date()
+        txnDate: currentTime
       });
     }
   };
 
-  const getCurrentDuration = (startTime: Date) => {
-    const minutes = calculateDurationInMinutes(startTime, new Date());
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return `${hours}h ${mins}m`;
+  const formatStartTime = (date: Date) => {
+    return date.toLocaleTimeString('en-US', { 
+      hour: 'numeric', 
+      minute: '2-digit',
+      hour12: true 
+    });
   };
 
-  if (activeSessions.length === 0) {
-    return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div className="flex items-center mb-4">
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center">
           <Clock className="h-6 w-6 text-green-600 mr-2" />
           <h2 className="text-xl font-semibold text-gray-900">Active Sessions</h2>
         </div>
+        <span className="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded-full">
+          {activeSessions.length} Active
+        </span>
+      </div>
+
+      {activeSessions.length === 0 ? (
         <div className="text-center py-8">
           <Clock className="h-12 w-12 text-gray-400 mx-auto mb-3" />
           <p className="text-gray-500">No active sessions</p>
         </div>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div className="flex items-center mb-6">
-          <Clock className="h-6 w-6 text-green-600 mr-2" />
-          <h2 className="text-xl font-semibold text-gray-900">Active Sessions</h2>
-          <span className="ml-auto bg-green-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded-full">
-            {activeSessions.length} Active
-          </span>
-        </div>
-
+      ) : (
         <div className="space-y-4">
           {activeSessions.map((session) => (
             <div key={session.id} className="border border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors">
-              <div className="flex justify-between items-start mb-3">
+              <div className="flex justify-between items-start">
                 <div>
                   <h3 className="font-medium text-gray-900">{session.customerName}</h3>
                   <p className="text-sm text-gray-600">
                     {session.gameType.toUpperCase()} • {session.controllerCount} Controller{session.controllerCount > 1 ? 's' : ''}
                   </p>
+                  <p className="text-xs text-gray-500">
+                    Started at {formatStartTime(new Date(session.startTime))}
+                  </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-medium text-gray-900">
-                    {getCurrentDuration(new Date(session.startTime))}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    Started {formatTime(new Date(session.startTime))}
-                  </p>
+                  <div className="flex items-center justify-end text-sm font-medium text-gray-900 mb-2">
+                    <Clock className="h-4 w-4 mr-1" />
+                    <span className="font-mono">{durations[session.id]?.display || '00:00:00'}</span>
+                  </div>
+                  <button
+                    onClick={() => setSelectedSession(session)}
+                    className="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    End Session
+                  </button>
                 </div>
               </div>
-              
-              <button
-                onClick={() => setSelectedSession(session)}
-                className="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
-              >
-                End Session
-              </button>
             </div>
           ))}
         </div>
-      </div>
+      )}
 
       {selectedSession && (
         <EndSessionModal
           session={selectedSession}
           onClose={() => setSelectedSession(null)}
           onSubmit={handleEndSession}
+          currentTime={currentTime}
         />
       )}
-    </>
+    </div>
   );
 }

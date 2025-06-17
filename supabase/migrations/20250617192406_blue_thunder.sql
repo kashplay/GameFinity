@@ -1,5 +1,5 @@
 /*
-  # Game Shop Tracker Database Schema
+  # Gamefinity Tracker Database Schema
 
   1. New Tables
     - `game_sessions`

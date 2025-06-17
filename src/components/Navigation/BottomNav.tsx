@@ -1,6 +1,7 @@
 import React from 'react';
-import { Play, Clock, DollarSign, BarChart3 } from 'lucide-react';
+import { Play, Clock, IndianRupee, BarChart3 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useData } from '../../contexts/DataContext';
 
 interface BottomNavProps {
   activeTab: string;
@@ -9,16 +10,28 @@ interface BottomNavProps {
 
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   const { user } = useAuth();
+  const { getActiveSessions } = useData();
+  const activeSessionsCount = getActiveSessions().length;
 
   const userTabs = [
     { id: 'start', label: 'Start Session', icon: Play },
-    { id: 'active', label: 'Active', icon: Clock },
-    { id: 'cash', label: 'Cash', icon: DollarSign }
+    { 
+      id: 'active', 
+      label: 'Active', 
+      icon: Clock,
+      badge: activeSessionsCount > 0 ? activeSessionsCount : undefined
+    },
+    { id: 'cash', label: 'Cash', icon: IndianRupee }
   ];
 
   const adminTabs = [
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
-    { id: 'active', label: 'Active', icon: Clock },
+    { 
+      id: 'active', 
+      label: 'Active', 
+      icon: Clock,
+      badge: activeSessionsCount > 0 ? activeSessionsCount : undefined
+    },
     { id: 'completed', label: 'Completed', icon: Play }
   ];
 
@@ -31,13 +44,20 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
-            className={`flex flex-col items-center py-2 px-3 rounded-lg transition-colors ${
+            className={`flex flex-col items-center py-2 px-3 rounded-lg transition-colors relative ${
               activeTab === tab.id
                 ? 'text-blue-600 bg-blue-50'
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >
-            <tab.icon className="h-5 w-5 mb-1" />
+            <div className="relative">
+              <tab.icon className="h-5 w-5 mb-1" />
+              {tab.badge && (
+                <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[8px] font-bold rounded-full h-3 w-3 flex items-center justify-center">
+                  {tab.badge}
+                </span>
+              )}
+            </div>
             <span className="text-xs font-medium">{tab.label}</span>
           </button>
         ))}

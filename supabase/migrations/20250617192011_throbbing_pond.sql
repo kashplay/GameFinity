@@ -47,6 +47,9 @@ CREATE TABLE IF NOT EXISTS game_sessions (
 -- Enable RLS
 ALTER TABLE game_sessions ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policy if it exists
+DROP POLICY IF EXISTS "Allow all operations for authenticated users" ON game_sessions;
+
 -- Create policies
 CREATE POLICY "Allow all operations for authenticated users"
   ON game_sessions
@@ -54,6 +57,9 @@ CREATE POLICY "Allow all operations for authenticated users"
   TO authenticated
   USING (true)
   WITH CHECK (true);
+
+-- Drop existing trigger if it exists
+DROP TRIGGER IF EXISTS update_game_sessions_updated_at ON game_sessions;
 
 -- Create updated_at trigger
 CREATE OR REPLACE FUNCTION update_updated_at_column()

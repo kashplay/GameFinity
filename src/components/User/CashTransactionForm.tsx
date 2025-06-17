@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { DollarSign, Plus, Minus } from 'lucide-react';
+import { IndianRupee, Plus, Minus } from 'lucide-react';
 import { useData } from '../../contexts/DataContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { formatCurrency } from '../../utils/priceCalculations';
 
 export function CashTransactionForm() {
@@ -10,6 +11,7 @@ export function CashTransactionForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { addCashTransaction, getCurrentCashBalance } = useData();
+  const { user } = useAuth();
   const currentBalance = getCurrentCashBalance();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -45,13 +47,15 @@ export function CashTransactionForm() {
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
-          <DollarSign className="h-6 w-6 text-green-600 mr-2" />
-          <h2 className="text-xl font-semibold text-gray-900">Shop Cash Transaction</h2>
+          <IndianRupee className="h-6 w-6 text-green-600 mr-2" />
+          <h2 className="text-xl font-semibold text-gray-900">Gamefinity Cash Transaction</h2>
         </div>
-        <div className="text-right">
-          <p className="text-sm text-gray-600">Current Balance</p>
-          <p className="text-lg font-semibold text-green-600">{formatCurrency(currentBalance)}</p>
-        </div>
+        {user?.role === 'ADMIN' && (
+          <div className="text-right">
+            <p className="text-sm text-gray-600">Current Balance</p>
+            <p className="text-lg font-semibold text-green-600">{formatCurrency(currentBalance)}</p>
+          </div>
+        )}
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">

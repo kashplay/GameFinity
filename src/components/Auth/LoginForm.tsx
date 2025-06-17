@@ -32,7 +32,10 @@ export function LoginForm() {
           <div className="mx-auto h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center mb-4">
             <GamepadIcon className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Game Shop Tracker</h1>
+          <h1 className="text-2xl font-bold text-gray-900 flex items-center justify-center">
+            Gamefinity Tracker
+            <GamepadIcon className="h-6 w-6 ml-2 text-blue-600" />
+          </h1>
           <p className="text-gray-600 mt-2">Sign in to manage your gaming sessions</p>
         </div>
 

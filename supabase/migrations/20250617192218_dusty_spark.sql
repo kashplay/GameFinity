@@ -66,6 +66,9 @@ CREATE INDEX IF NOT EXISTS idx_cash_transactions_created_at ON cash_transactions
 CREATE INDEX IF NOT EXISTS idx_cash_transactions_game_session_id ON cash_transactions (game_session_id);
 CREATE INDEX IF NOT EXISTS idx_cash_transactions_txn_date ON cash_transactions (txn_date);
 
+-- Drop existing trigger if it exists
+DROP TRIGGER IF EXISTS update_game_sessions_updated_at ON game_sessions;
+
 -- Create trigger for automatic updated_at timestamp
 CREATE TRIGGER update_game_sessions_updated_at
     BEFORE UPDATE ON game_sessions
@@ -75,6 +78,10 @@ CREATE TRIGGER update_game_sessions_updated_at
 -- Enable Row Level Security
 ALTER TABLE game_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE cash_transactions ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Allow all operations for authenticated users" ON game_sessions;
+DROP POLICY IF EXISTS "Allow all operations for authenticated users" ON cash_transactions;
 
 -- Create policies for authenticated users
 CREATE POLICY "Allow all operations for authenticated users" ON game_sessions
