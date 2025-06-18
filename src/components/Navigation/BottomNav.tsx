@@ -32,7 +32,8 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
       icon: Clock,
       badge: activeSessionsCount > 0 ? activeSessionsCount : undefined
     },
-    { id: 'completed', label: 'Completed', icon: Play }
+    { id: 'completed', label: 'Completed', icon: Play },
+    { id: 'transactions', label: 'Cash Transactions', icon: IndianRupee }
   ];
 
   const tabs = user?.role === 'ADMIN' ? adminTabs : userTabs;

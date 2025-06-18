@@ -4,6 +4,7 @@ import { BottomNav } from '../components/Navigation/BottomNav';
 import { DashboardStats } from '../components/Admin/DashboardStats';
 import { ActiveSessionsList } from '../components/User/ActiveSessionsList';
 import { CompletedSessionsList } from '../components/Admin/CompletedSessionsList';
+import { CashTransactionsList } from '../components/Admin/CashTransactionsList';
 
 export function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -21,6 +22,8 @@ export function AdminDashboard() {
         return <ActiveSessionsList />;
       case 'completed':
         return <CompletedSessionsList />;
+      case 'transactions':
+        return <CashTransactionsList />;
       default:
         return (
           <div className="space-y-6">
