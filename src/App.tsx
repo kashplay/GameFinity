@@ -8,7 +8,7 @@ import { LoadingSpinner } from './components/Layout/LoadingSpinner';
 import { ErrorMessage } from './components/Layout/ErrorMessage';
 
 function AppContent() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, postLoginLoading } = useAuth();
   const { loading, error } = useData();
 
   if (loading) {
@@ -21,6 +21,10 @@ function AppContent() {
 
   if (!isAuthenticated) {
     return <LoginForm />;
+  }
+
+  if (postLoginLoading) {
+    return <LoadingSpinner variant="post-login" />;
   }
 
   return user?.role === 'ADMIN' ? <AdminDashboard /> : <UserDashboard />;

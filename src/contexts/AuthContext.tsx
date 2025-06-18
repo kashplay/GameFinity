@@ -7,6 +7,7 @@ interface AuthContextType {
   logout: () => void;
   isAuthenticated: boolean;
   loginError: string | null;
+  postLoginLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -33,6 +34,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return savedUser ? JSON.parse(savedUser) : null;
   });
   const [loginError, setLoginError] = useState<string | null>(null);
+  const [postLoginLoading, setPostLoginLoading] = useState(false);
 
   const login = async (username: string, password: string, role: 'USER' | 'ADMIN'): Promise<boolean> => {
     setLoginError(null);
@@ -53,12 +55,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
     
     setUser(newUser);
     localStorage.setItem('gameShopUser', JSON.stringify(newUser));
+    
+    // Set post-login loading state
+    setPostLoginLoading(true);
+    
+    // Simulate loading time for better UX
+    setTimeout(() => {
+      setPostLoginLoading(false);
+    }, 1500);
+    
     return true;
   };
 
   const logout = () => {
     setUser(null);
     setLoginError(null);
+    setPostLoginLoading(false);
     localStorage.removeItem('gameShopUser');
   };
 
@@ -67,7 +79,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     login,
     logout,
     isAuthenticated: !!user,
-    loginError
+    loginError,
+    postLoginLoading
   };
 
   return (
