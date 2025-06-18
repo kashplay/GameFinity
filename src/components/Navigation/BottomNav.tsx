@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Clock, IndianRupee, BarChart3 } from 'lucide-react';
+import { Play, Clock, IndianRupee, BarChart3, Calendar } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useData } from '../../contexts/DataContext';
 
@@ -21,11 +21,13 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
       icon: Clock,
       badge: activeSessionsCount > 0 ? activeSessionsCount : undefined
     },
+    { id: 'recent', label: 'Recent', icon: Calendar },
     { id: 'cash', label: 'Cash', icon: IndianRupee }
   ];
 
   const adminTabs = [
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
+    { id: 'start', label: 'Start Session', icon: Play },
     { 
       id: 'active', 
       label: 'Active', 

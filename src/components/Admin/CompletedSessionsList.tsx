@@ -51,6 +51,13 @@ export function CompletedSessionsList() {
         <h2 className="text-xl font-semibold text-gray-900">Completed Sessions</h2>
       </div>
 
+      {/* Info note */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-6">
+        <p className="text-sm text-blue-800">
+          <strong>Admin View:</strong> All completed sessions are shown below. Use the date filters above to narrow down results, or leave them empty to see all sessions.
+        </p>
+      </div>
+
       {/* Filters */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div>

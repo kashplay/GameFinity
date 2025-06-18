@@ -11,7 +11,11 @@ const GAME_TYPES = [
   { value: 'pool', label: 'Pool' }
 ];
 
-export function GameSessionForm() {
+interface GameSessionFormProps {
+  onSuccess?: (customerName: string) => void;
+}
+
+export function GameSessionForm({ onSuccess }: GameSessionFormProps) {
   const [customerName, setCustomerName] = useState('');
   const [controllerCount, setControllerCount] = useState(1);
   const [gameType, setGameType] = useState<string>('screen1');
@@ -52,6 +56,11 @@ export function GameSessionForm() {
       
       // Show success notification
       setShowSuccess(true);
+      
+      // Call onSuccess callback if provided
+      if (onSuccess) {
+        onSuccess(customerNameValue);
+      }
     } catch (error) {
       console.error('Error creating  session:', error);
     } finally {
@@ -67,7 +76,7 @@ export function GameSessionForm() {
     <>
       {showSuccess && (
         <SuccessNotification
-          message={`${successCustomerName} has been added to active sessions!`}
+          message={`Session for ${successCustomerName} has been started successfully!`}
           onClose={() => setShowSuccess(false)}
         />
       )}

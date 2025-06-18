@@ -9,6 +9,7 @@ interface DataContextType {
   updateGameSession: (id: string, updates: Partial<GameSession>) => Promise<void>;
   getActiveSessions: () => GameSession[];
   getCompletedSessions: (startDate?: Date, endDate?: Date) => GameSession[];
+  getCompletedSessionsLast24Hours: () => GameSession[];
   
   // Cash Transactions
   cashTransactions: CashTransaction[];
@@ -209,6 +210,20 @@ export function DataProvider({ children }: DataProviderProps) {
     return completed.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   };
 
+  const getCompletedSessionsLast24Hours = () => {
+    const now = new Date();
+    const oneDayAgo = new Date(now);
+    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+
+    return gameSessions.filter(session => {
+      // Only include completed sessions
+      if (session.status !== 'COMPLETED' || !session.endTime) return false;
+      
+      const endTime = new Date(session.endTime);
+      return endTime >= oneDayAgo && endTime <= now;
+    }).sort((a, b) => new Date(b.endTime!).getTime() - new Date(a.endTime!).getTime());
+  };
+
   const addCashTransaction = async (transactionData: Omit<CashTransaction, 'id' | 'createdAt'>) => {
     try {
       const currentBalance = getCurrentCashBalance();
@@ -288,6 +303,7 @@ export function DataProvider({ children }: DataProviderProps) {
     updateGameSession,
     getActiveSessions,
     getCompletedSessions,
+    getCompletedSessionsLast24Hours,
     cashTransactions,
     addCashTransaction,
     getCurrentCashBalance,

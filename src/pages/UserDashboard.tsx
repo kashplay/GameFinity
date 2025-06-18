@@ -4,6 +4,7 @@ import { BottomNav } from '../components/Navigation/BottomNav';
 import { GameSessionForm } from '../components/User/GameSessionForm';
 import { ActiveSessionsList } from '../components/User/ActiveSessionsList';
 import { CashTransactionForm } from '../components/User/CashTransactionForm';
+import { CompletedSessions24Hours } from '../components/User/CompletedSessions24Hours';
 
 export function UserDashboard() {
   const [activeTab, setActiveTab] = useState('start');
@@ -11,13 +12,15 @@ export function UserDashboard() {
   const renderContent = () => {
     switch (activeTab) {
       case 'start':
-        return <GameSessionForm />;
+        return <GameSessionForm onSuccess={(customerName) => {}} />;
       case 'active':
         return <ActiveSessionsList />;
+      case 'recent':
+        return <CompletedSessions24Hours />;
       case 'cash':
         return <CashTransactionForm />;
       default:
-        return <GameSessionForm />;
+        return <GameSessionForm onSuccess={(customerName) => {}} />;
     }
   };
 
