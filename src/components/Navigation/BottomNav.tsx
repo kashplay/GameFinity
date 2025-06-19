@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Clock, IndianRupee, BarChart3, Calendar } from 'lucide-react';
+import { Play, Clock, IndianRupee, BarChart3, Calendar, Trophy, Gamepad2 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useData } from '../../contexts/DataContext';
 
@@ -34,7 +34,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
       icon: Clock,
       badge: activeSessionsCount > 0 ? activeSessionsCount : undefined
     },
-    { id: 'completed', label: 'Completed', icon: Play },
+    { id: 'completed', label: 'Completed', icon: Trophy },
     { id: 'transactions', label: 'Cash Transactions', icon: IndianRupee }
   ];
 

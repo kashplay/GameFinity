@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loader2, GamepadIcon, CheckCircle } from 'lucide-react';
+import { Loader2, Gamepad2, CheckCircle } from 'lucide-react';
 
 interface LoadingSpinnerProps {
   variant?: 'default' | 'post-login' | 'session-creation' | 'transaction-creation';
@@ -50,7 +50,7 @@ export function LoadingSpinner({ variant = 'default', message }: LoadingSpinnerP
         return (
           <div className="text-center">
             <div className="mx-auto h-20 w-20 bg-blue-600 rounded-full flex items-center justify-center mb-6 animate-pulse">
-              <GamepadIcon className="h-10 w-10 text-white" />
+              <Gamepad2 className="h-10 w-10 text-white" />
             </div>
             <Loader2 className="h-8 w-8 animate-spin text-blue-600 mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-gray-900 mb-2">Welcome to Gamefinity Tracker</h2>

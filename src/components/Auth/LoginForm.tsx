@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GamepadIcon, Shield, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { Gamepad2, Shield, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export function LoginForm() {
@@ -30,11 +30,11 @@ export function LoginForm() {
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
         <div className="text-center mb-8">
           <div className="mx-auto h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center mb-4">
-            <GamepadIcon className="h-8 w-8 text-white" />
+            <Gamepad2 className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900 flex items-center justify-center">
             Gamefinity Tracker
-            <GamepadIcon className="h-6 w-6 ml-2 text-blue-600" />
+            <Gamepad2 className="h-6 w-6 ml-2 text-blue-600" />
           </h1>
           <p className="text-gray-600 mt-2">Sign in to manage your gaming sessions</p>
         </div>
@@ -97,7 +97,7 @@ export function LoginForm() {
                     : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
                 }`}
               >
-                <GamepadIcon className="h-6 w-6 mx-auto mb-2" />
+                <Gamepad2 className="h-6 w-6 mx-auto mb-2" />
                 <div className="font-medium">User</div>
                 <div className="text-xs">Manage Sessions</div>
               </button>
