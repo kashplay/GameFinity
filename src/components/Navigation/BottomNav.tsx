@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Clock, IndianRupee, BarChart3, Calendar, Trophy, Gamepad2 } from 'lucide-react';
+import { Play, Clock, IndianRupee, BarChart3, Calendar, Trophy, Gamepad2, Calculator } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useData } from '../../contexts/DataContext';
 
@@ -35,7 +35,8 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
       badge: activeSessionsCount > 0 ? activeSessionsCount : undefined
     },
     { id: 'completed', label: 'Completed', icon: Trophy },
-    { id: 'transactions', label: 'Cash Transactions', icon: IndianRupee }
+    { id: 'transactions', label: 'Cash Transactions', icon: IndianRupee },
+    { id: 'calculator', label: 'Calculator', icon: Calculator }
   ];
 
   const tabs = user?.role === 'ADMIN' ? adminTabs : userTabs;

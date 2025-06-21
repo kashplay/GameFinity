@@ -5,6 +5,7 @@ import { DashboardStats } from '../components/Admin/DashboardStats';
 import { ActiveSessionsList } from '../components/User/ActiveSessionsList';
 import { CompletedSessionsList } from '../components/Admin/CompletedSessionsList';
 import { CashTransactionsList } from '../components/Admin/CashTransactionsList';
+import { PriceCalculator } from '../components/Admin/PriceCalculator';
 import { GameSessionForm } from '../components/User/GameSessionForm';
 import { Play } from 'lucide-react';
 import { SuccessNotification } from '../components/Layout/LoadingSpinner';
@@ -63,6 +64,8 @@ export function AdminDashboard() {
         return <CompletedSessionsList />;
       case 'transactions':
         return <CashTransactionsList />;
+      case 'calculator':
+        return <PriceCalculator />;
       default:
         return (
           <div className="space-y-6">

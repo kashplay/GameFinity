@@ -21,6 +21,8 @@ export function calculatePrice(controllerCount: number, roundedHours: number, ga
       pricePerHour = 250;
       if (roundedHours === 0.5) {
         finalPrice = 150; // special case for half-hour
+      } else if (roundedHours === 1.5) {
+        finalPrice = 400; // special case for 1.5 hours
       } else {
         finalPrice = pricePerHour * roundedHours;
       }
