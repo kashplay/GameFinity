@@ -43,12 +43,12 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200/60 shadow-lg safe-area-pb">
-      <div className="flex">
+      <div className="flex overflow-x-auto scrollbar-hide md:overflow-x-visible">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
-            className={`flex-1 flex flex-col items-center justify-center py-4 px-2 transition-all duration-300 ease-out relative group ${
+            className={`flex-shrink-0 md:flex-1 flex flex-col items-center justify-center py-4 px-3 min-w-[80px] md:min-w-0 transition-all duration-300 ease-out relative group ${
               activeTab === tab.id
                 ? 'text-blue-600'
                 : 'text-gray-500 hover:text-gray-700'
