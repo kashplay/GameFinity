@@ -34,7 +34,7 @@ export function calculatePrice(controllerCount: number, roundedHours: number, ga
       break;
 
     case 4:
-      pricePerHour = 500;
+      pricePerHour = 450;
       finalPrice = pricePerHour * roundedHours;
       break;
 

@@ -44,7 +44,7 @@ export function PriceCalculator() {
       1: { basePrice: 150, description: '1 Controller: ₹150 per hour' },
       2: { basePrice: 250, description: '2 Controllers: ₹250 per hour' },
       3: { basePrice: 400, description: '3 Controllers: ₹400 per hour' },
-      4: { basePrice: 500, description: '4 Controllers: ₹500 per hour' }
+      4: { basePrice: 450, description: '4 Controllers: ₹450 per hour' }
     };
 
     return pricing[controllerCount as keyof typeof pricing];
@@ -248,8 +248,8 @@ export function PriceCalculator() {
               <tr>
                 <td className="px-4 py-2 text-sm text-gray-900">Screen</td>
                 <td className="px-4 py-2 text-sm text-gray-600">4</td>
-                <td className="px-4 py-2 text-sm text-gray-900">₹500</td>
-                <td className="px-4 py-2 text-sm text-gray-900">₹250</td>
+                <td className="px-4 py-2 text-sm text-gray-900">₹450</td>
+                <td className="px-4 py-2 text-sm text-gray-900">₹225</td>
               </tr>
             </tbody>
           </table>
