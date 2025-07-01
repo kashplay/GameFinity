@@ -36,7 +36,7 @@ export function PriceCalculator() {
     if (gameType === 'pool') {
       return {
         basePrice: 250,
-        description: 'Pool games: ₹250 per hour'
+        description: 'Pool games: ₹250 per hour (₹150 for 0.5 hours)'
       };
     }
 
@@ -176,6 +176,11 @@ export function PriceCalculator() {
             <p className="text-xs text-gray-600 mb-1">
               {pricingInfo.description}
             </p>
+            {gameType === 'pool' && (
+              <p className="text-xs text-gray-600">
+                Special pricing for 0.5 hours: ₹150
+              </p>
+            )}
             {gameType !== 'pool' && controllerCount <= 2 && (
               <p className="text-xs text-gray-600">
                 Special pricing for 0.5 hours: {controllerCount === 1 ? '₹100' : '₹150'}
@@ -219,7 +224,7 @@ export function PriceCalculator() {
                 <td className="px-4 py-2 text-sm text-gray-900">Pool</td>
                 <td className="px-4 py-2 text-sm text-gray-600">-</td>
                 <td className="px-4 py-2 text-sm text-gray-900">₹250</td>
-                <td className="px-4 py-2 text-sm text-gray-900">₹125</td>
+                <td className="px-4 py-2 text-sm text-gray-900">₹150</td>
               </tr>
               <tr>
                 <td className="px-4 py-2 text-sm text-gray-900">Screen</td>

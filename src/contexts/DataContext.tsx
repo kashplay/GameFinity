@@ -207,7 +207,12 @@ export function DataProvider({ children }: DataProviderProps) {
       });
     }
     
-    return completed.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return completed.sort((a, b) => {
+      // Sort by endTime in descending order (most recent first)
+      const endTimeA = a.endTime ? new Date(a.endTime).getTime() : 0;
+      const endTimeB = b.endTime ? new Date(b.endTime).getTime() : 0;
+      return endTimeB - endTimeA;
+    });
   };
 
   const getCompletedSessionsLast24Hours = () => {

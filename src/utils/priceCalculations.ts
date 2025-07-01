@@ -4,7 +4,11 @@ export function calculatePrice(controllerCount: number, roundedHours: number, ga
 
   if (gameType.toLowerCase() === 'pool') {
     pricePerHour = 250;
-    return pricePerHour * roundedHours;
+    if (roundedHours === 0.5) {
+      return 150; // special case for half-hour
+    } else {
+      return pricePerHour * roundedHours;
+    }
   }
 
   switch (controllerCount) {
