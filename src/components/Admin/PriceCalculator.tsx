@@ -36,7 +36,7 @@ export function PriceCalculator() {
     if (gameType === 'pool') {
       return {
         basePrice: 250,
-        description: 'Pool games: ₹250 per hour (₹150 for 0.5 hours)'
+        description: 'Pool games: ₹250 per hour (₹150 for 0.5 hours, ₹400 for 1.5 hours)'
       };
     }
 
@@ -177,9 +177,10 @@ export function PriceCalculator() {
               {pricingInfo.description}
             </p>
             {gameType === 'pool' && (
-              <p className="text-xs text-gray-600">
-                Special pricing for 0.5 hours: ₹150
-              </p>
+              <div className="text-xs text-gray-600 space-y-1">
+                <p>Special pricing for 0.5 hours: ₹150</p>
+                <p>Special pricing for 1.5 hours: ₹400</p>
+              </div>
             )}
             {gameType !== 'pool' && controllerCount <= 2 && (
               <p className="text-xs text-gray-600">
@@ -217,6 +218,9 @@ export function PriceCalculator() {
                 <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
                   0.5h Rate
                 </th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+                  1.5h Rate
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
@@ -225,36 +229,36 @@ export function PriceCalculator() {
                 <td className="px-4 py-2 text-sm text-gray-600">-</td>
                 <td className="px-4 py-2 text-sm text-gray-900">₹250</td>
                 <td className="px-4 py-2 text-sm text-gray-900">₹150</td>
+                <td className="px-4 py-2 text-sm text-gray-900">₹400</td>
               </tr>
               <tr>
                 <td className="px-4 py-2 text-sm text-gray-900">Screen</td>
                 <td className="px-4 py-2 text-sm text-gray-600">1</td>
                 <td className="px-4 py-2 text-sm text-gray-900">₹150</td>
                 <td className="px-4 py-2 text-sm text-gray-900">₹100</td>
+                <td className="px-4 py-2 text-sm text-gray-900">₹225</td>
               </tr>
               <tr>
                 <td className="px-4 py-2 text-sm text-gray-900">Screen</td>
                 <td className="px-4 py-2 text-sm text-gray-600">2</td>
                 <td className="px-4 py-2 text-sm text-gray-900">₹250</td>
                 <td className="px-4 py-2 text-sm text-gray-900">₹150</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 text-sm text-gray-900">Screen</td>
-                <td className="px-4 py-2 text-sm text-gray-600">2</td>
                 <td className="px-4 py-2 text-sm text-gray-900">₹400</td>
-                <td className="px-4 py-2 text-sm text-gray-900">1.5h Rate</td>
               </tr>
+
               <tr>
                 <td className="px-4 py-2 text-sm text-gray-900">Screen</td>
                 <td className="px-4 py-2 text-sm text-gray-600">3</td>
                 <td className="px-4 py-2 text-sm text-gray-900">₹400</td>
                 <td className="px-4 py-2 text-sm text-gray-900">₹200</td>
+                <td className="px-4 py-2 text-sm text-gray-900">₹600</td>
               </tr>
               <tr>
                 <td className="px-4 py-2 text-sm text-gray-900">Screen</td>
                 <td className="px-4 py-2 text-sm text-gray-600">4</td>
                 <td className="px-4 py-2 text-sm text-gray-900">₹450</td>
                 <td className="px-4 py-2 text-sm text-gray-900">₹225</td>
+                <td className="px-4 py-2 text-sm text-gray-900">₹675</td>
               </tr>
             </tbody>
           </table>
